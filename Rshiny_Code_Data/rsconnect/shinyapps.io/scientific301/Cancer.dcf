@@ -1,0 +1,13 @@
+name: cancer
+title: cancer
+username: scientific301
+account: scientific301
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10616653
+bundleId: 8970613
+url: https://phenomultiomics.shinyapps.io/cancer/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: -LAPTOP-FFBLJPS2.Rhistory|.RData|.RDataTmp|App.database.R|App.documentation.R|App.functional_analysis.R|App.home.R|app.integration.R|App.omicsnetwork.R|App.tutorial.R|practice-DESKTOP-SOBUQKS.R|practice.R|practice.RData|将所有疾病合到一起的代码.R

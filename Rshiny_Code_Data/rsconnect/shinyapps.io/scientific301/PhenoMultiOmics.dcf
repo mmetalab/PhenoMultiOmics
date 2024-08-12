@@ -1,0 +1,13 @@
+name: PhenoMultiOmics
+title: PhenoMultiOmics
+username: scientific301
+account: scientific301
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9554744
+bundleId:
+url: https://phenomultiomics.shinyapps.io/PhenoMultiOmics/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: App.database.R|App.documentation.R|App.omicsnetwork.R

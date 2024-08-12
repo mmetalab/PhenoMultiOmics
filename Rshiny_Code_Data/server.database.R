@@ -1,153 +1,225 @@
 ###SERVER.database
 
+observeEvent(input$construct, {
+  print("Workflowplot")
+})
+
+
 datasetInput1_1 <- reactive({
   database1 <- input$tab1_4
-  if (database1=="Leukemia"){
-    load("1.database_baixuebing.RData")
+  if (database1=="breast cancer"){
+    load("1.database_breast_cancer.RData")
     return(b1=ALL_2  )}
-  if (database1 == "Lung cancer") {
-    load("1.database_feiai.RData") 
-    return(b1=ALL_2)
-  } 
-  if (database1 == "Esophagus cancer") {
-    load("1.database_shiguanai.RData")
-    return(b1=ALL_2)
-  } 
-  if (database1 == "Pancreatic cancer") {
-    load("1.database_yixianai.RData")
-    return(b1=ALL_2)
-  } 
-  if (database1 == "Liver cancer") {
-    load("1.database_ganai.RData")
-    return(b1=ALL_2)
-  } 
-  if (database1 == "Intestinal cancer") {
-    load("1.database_changai.RData")
-    return(b1=ALL_2)
-  } 
-  if (database1 == "Bladder cancer") {
-    load("1.database_pangguangai.RData")
-    return(b1=ALL_2)
-  } 
-  if (database1 == "Kidney cancer") {
-    load("1.database_shenai.RData")
-    return(b1=ALL_2)
-  } 
-  if (database1 == "Prostatic cancer") {
-    load("1.database_qianliexian.RData")
-    return(b1=ALL_2)
+  if (database1=="lung cancer"){
+    load("1.database_lung_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="prostate cancer"){
+    load("1.database_prostate_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="hematologic cancer"){
+    load("1.database_hematologic_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="liver cancer"){
+    load("1.database_liver_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="stomach cancer"){
+    load("1.database_stomach_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="kidney cancer"){
+    load("1.database_kidney_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="colon cancer"){
+    load("1.database_colon_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="ovarian cancer"){
+    load("1.database_ovarian_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="esophageal cancer"){
+    load("1.database_esophageal_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="pancreatic cancer"){
+    load("1.database_pancreatic_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="urinary bladder cancer"){
+    load("1.database_urinary_bladder_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="uterine cancer"){
+    load("1.database_uterine_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="bone cancer"){
+    load("1.database_bone_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="thyroid cancer"){
+    load("1.database_thyroid_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="head and neck cancer"){
+    load("1.database_head_and_neck_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="brain cancer"){
+    load("1.database_brain_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="cervical cancer"){
+    load("1.database_cervical_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="skin cancer"){
+    load("1.database_skin_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="larynx cancer"){
+    load("1.database_larynx_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="bile duct cancer"){
+    load("1.database_bile_duct_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="germ cell cancer"){
+    load("1.database_germ_cell_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="adrenal gland cancer"){
+    load("1.database_adrenal_gland_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="ocular cancer"){
+    load("1.database_ocular_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="muscle cancer"){
+    load("1.database_muscle_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="testicular cancer"){
+    load("1.database_testicular_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="rectum cancer"){
+    load("1.database_rectum_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="gallbladder cancer"){
+    load("1.database_gallbladder_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="salivary gland cancer"){
+    load("1.database_salivary_gland_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="thymus cancer"){
+    load("1.database_thymus_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="pharynx cancer"){
+    load("1.database_pharynx_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="vulva cancer"){
+    load("1.database_vulva_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="lymphatic system cancer"){
+    load("1.database_lymphatic_system_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="peritoneum cancer"){
+    load("1.database_peritoneum_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="duodenum cancer"){
+    load("1.database_duodenum_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="appendix cancer"){
+    load("1.database_appendix_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="spinal cancer"){
+    load("1.database_spinal_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="penile cancer"){
+    load("1.database_penile_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="vascular cancer"){
+    load("1.database_vascular_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="vaginal cancer"){
+    load("1.database_vaginal_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="fallopian tube cancer"){
+    load("1.database_fallopian_tube_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="tracheal cancer"){
+    load("1.database_tracheal_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="mediastinal cancer"){
+    load("1.database_mediastinal_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="retroperitoneal cancer"){
+    load("1.database_retroperitoneal_cancer.RData")
+    return(b1=ALL_2  )}
+  if (database1=="ureter cancer"){
+    load("1.database_ureter_cancer.RData")
+    return(b1=ALL_2  )}
+  else{
+    return(b1 )
   }
-  if (database1 == "Metrocarcinoma") {
-    load("1.database_zigongai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "Throat cancer") {
-    load("1.database_houai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "Oral cancer") {
-    load("1.database_kouqiangai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "Skin cancer") {
-    load("1.database_pifuai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "Lymphoma cancer") {
-    load("1.database_linbaai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "Brain cancer") {
-    load("1.database_naoai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "Breast cancer") {
-    load("1.database_ruxianai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "Ovarian cancer") {
-    load("1.database_luanchaoai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "testicular cancer") {
-    load("1.database_gaowanai.RData")
-    return(b1=ALL_2)
-  }
-  if (database1 == "Adrenal cancer") {
-    load("1.database_shenshangxian.RData")
-    return(b1=ALL_2)
-  }else{
-    return(b1)
-  }
-}
-  
-)
+})
 
 datasetInput1 <- reactive({
-  data1=datasetInput1_1()
-  # data2=data1 %>% dplyr::select(-any_of(c("Metabolite","HMDB ID"))) %>% dplyr::distinct(.keep_all = TRUE)
-  data2 = data1 %>% dplyr::select(-any_of(c("Metabolite", "HMDB ID"))) %>% dplyr::distinct(.keep_all = TRUE)
-  
-  data=data2
-    # dplyr::distinct(data1[,-"Metabolite"],.keep_all = TRUE)
-  if(input$tab1_1!="All"){
-    data=data[data$`Gene symbol`==input$tab1_1,]}
-  if(input$tab1_2!="All"){
-    data=data[data$Enzyme==input$tab1_2,]}
-  if ("Metabolite" %in% names(data1)) {
-    updateSelectInput(session, "tab1_3", choices = c("All", unique(data1$Metabolite)))
-  }
-  if(input$tab1_3!="All"){
-  data=filter(data,str_detect(`Enzymatic reactions`,input$tab1_3))}
-  
-  data_with_no_na <- data %>%
-    filter(complete.cases(.)) %>%
-    arrange(`Disease ID`)
-  data_with_na <- data2 %>%
-    filter(!complete.cases(.))
-  data_final <- rbind(data_with_no_na, data_with_na)
-  data_final
+  datasetInput1_1() %>%
+    {data <- .; list(
+      data_with_no_na = data %>% filter(complete.cases(.)) %>% arrange(`Cancer`),
+      data_with_na = data %>% filter(!complete.cases(.))
+    )} %>%
+    {rbind(.$data_with_no_na, .$data_with_na)} %>%
+    mutate(
+      Gene = paste0('<a href="https://www.ncbi.nlm.nih.gov/gene/?term=', Gene, '/entry" target="_blank">', Gene, '</a>'),
+      Uniprot = paste0('<a href="https://www.uniprot.org/uniprotkb/', Uniprot, '/entry" target="_blank">', Uniprot, '</a>'),
+      `HMDB ID`=paste0('<a href="https://hmdb.ca/metabolites/', `HMDB ID`, '/entry" target="_blank">', `HMDB ID`, '</a>')
+    )
 })
+
+
+
+
+output$table1 <- DT::renderDataTable({
+  data <- datasetInput1()[, -ncol(datasetInput1())]  
+  data <- data[sample(nrow(data)), ]  
   
-output$table1 <-  DT::renderDataTable({
-  datasetInput1()},options = list(pageLength = 5))
+  datatable(data=data,
+            escape = FALSE, 
+            options=list(pageLength = 5)
+            )})
 
 output$download1 <-downloadHandler(
   filename = function() {
     paste("basic_data",Sys.Date(),".csv",sep ="")},
   content = function(file) {
-    write.csv(datasetInput1(),file)}#,row.names = FALSE)}
+    original_data <- datasetInput1()
+    original_data$Gene <- gsub('<a href="[^"]+" target="_blank">([^<]+)</a>', '\\1', original_data$Gene)
+    original_data$Uniprot <- gsub('<a href="[^"]+" target="_blank">([^<]+)</a>', '\\1', original_data$Uniprot)
+    original_data$`HMDB ID` <- gsub('<a href="[^"]+" target="_blank">([^<]+)</a>', '\\1', original_data$`HMDB ID`)
+    write.csv(original_data, file, row.names = FALSE)}
   )
 
-observe({
-  updateSelectInput(session,"tab1_1",choices = c("All", unique(datasetInput1()$`Gene symbol`)))
-  updateSelectInput(session,"tab1_2",choices = c("All", unique(datasetInput1()$Enzyme)))
-})
-
+feature_met$link1_1 <- paste0('<a href="https://hmdb.ca/metabolites/', feature_met$`HMDB ID`, '" target="_blank">', feature_met$`HMDB ID`, '</a>')
+feature_met$`HMDB ID` <- feature_met$link1_1
 
 output$table1_1 <- DT::renderDataTable({
-  data=feature_met},options = list(pageLength = 5)
-  )
+  datatable(data=feature_met[, -ncol(feature_met)],escape = FALSE, options=list(pageLength = 5,scrollX = TRUE)
+            
+  )})
+
 output$download1_1 <-downloadHandler(
   filename = function() {
     paste("feature_met",Sys.Date(),".csv",sep ="")},
   content = function(file) {
-    write.csv(feature_met[,1:4],file)}
+    original_feature_met <- feature_met
+    original_feature_met$HMDB <- gsub('<a href="[^"]+" target="_blank">([^<]+)</a>', '\\1', feature_met$HMDB)
+    write.csv(original_feature_met[, -which(names(feature_met) == "link1_1")], file, row.names = FALSE)
+    }
 )
 
+protein$link1_2 <- paste0('<a href="https://www.uniprot.org/uniprotkb/', protein$UniProt, '/entry" target="_blank">', protein$UniProt, '</a>')
+protein$UniProt <- protein$link1_2
+
 output$table1_2 <- DT::renderDataTable({
-  data=protein},options=list(pageLength = 5)
-  )
+  datatable(data=protein[, -ncol(protein)],escape = FALSE, options=list(pageLength = 5,scrollX = TRUE)
+  
+  )})
 output$download1_2 <-downloadHandler(
   filename = function() {
     paste("protein",Sys.Date(),".csv",sep ="")},
   content = function(file) {
-    write.csv(protein,file)}#,row.names = FALSE)}
+    original_protein <- protein
+    original_protein$UniProt <- gsub('<a href="[^"]+" target="_blank">([^<]+)</a>', '\\1', protein$UniProt)
+    write.csv(original_protein[, -which(names(original_protein) == "link1_2")],file)}#,row.names = FALSE)}
 )
 
 
 output$image2_1 <- renderPlot({
-  # 统计 Category 列中各类别的频率并按照百分比降序排序
   category_data <- protein %>%
     group_by(Category) %>%
     summarise(Count = n()) %>%
@@ -156,7 +228,6 @@ output$image2_1 <- renderPlot({
   
   colors <- brewer.pal(n = n_distinct(category_data$Category), name = "Paired")
   
-  # 绘制饼图
   ggplot(category_data, aes(x = "", y = Percentage, fill = Category)) +
     geom_bar(width = 1, stat = "identity") +
     coord_polar("y", start = 0) +
@@ -172,36 +243,6 @@ output$image2_1 <- renderPlot({
       legend.title = element_blank(),
       legend.position = "right",
       legend.text = element_text(size = 14)
-    ) +
-    labs(title = "Distribution of Protein Categories", fill = "Category")
+    ) 
 
 })
-
-output$image2_2 <- renderPlot({
-  protein <- protein %>%
-    mutate(Length = as.numeric(as.character(Length)))
-  
-  # 绘制条形图
-  ggplot(protein, aes(x = cut(Length, breaks = seq(min(Length, na.rm = TRUE), max(Length, na.rm = TRUE), by = 100)))) +
-    geom_bar(fill = "#3074AE", color = "#10334A") +
-    theme_bw(base_size = 14) +
-    theme(
-      plot.title = element_text(hjust = 0.5, size = 20, face = "bold", color = "#10334A"),
-      axis.title.x = element_text(face = "bold", size = 16, color = "#10334A"),
-      axis.title.y = element_text(face = "bold", size = 16, color = "#10334A"),
-      axis.text.x = element_text(angle = 45, hjust = 1, color = "#10334A", size = 12),
-      axis.text.y = element_text(color = "#10334A"),
-      panel.grid.major.x = element_blank(),
-      panel.grid.minor = element_blank(),
-      panel.border = element_blank(),
-      legend.position = "none"
-    ) +
-    labs(
-      title = "Protein Length Distribution",
-      x = "Protein Length Range",
-      y = "Frequency"
-    ) +
-    scale_y_continuous(name = "Frequency", labels = scales::comma)
-  
-})
-

@@ -3,54 +3,76 @@ library(shiny)
 library(shinythemes)
 library(shinydashboard)
 
+PhenoMultiOmics_database <- HTML("To construct the enzymatic reaction inferred multi-omics database, we extracted the enzymatic reactions from multiple enzymatic reaction databases, including Metabolic Atlas, BRENDA database, RHEA database, and EnzymeMap database (Li et al., 2023; Wang et al., 2021; Schomburg, 2004; Bansal et al., 2022; Heid et al., 2023). Each enzymatic reaction is denoted as a chemical reaction equation with reactants and products, including the enzymes involved in the reaction. 
+To generate the connection between genes, proteins, metabolites, and diseases, we first mapped the enzymes/proteins to associated genes using Uniprot database, followed by generating the gene-disease association information based on the Disgenet database. In this study, we focused on the top twenty common cancer types. 
+For metabolites and proteins that involved in the same enzymatic reaction, it is regarded as protein-metabolite association. Therefore, the PhenoMultiOmics database (PMODB) includes 5,540 enzymatic reactions across 45 cancer types, which incorporate 759,558 gene-protein-metabolite-disease connections. 
+PMODB also comprises essential information about diseases, genes, proteins, and metabolites with link to external databases. For genes and diseases, it includes the disease name and ID, gene name, gene symbol, and gene-disease association score. Regarding proteins, the database contains information such as protein name, enzyme classification (EC) number, UniProt ID, enzyme name, protein sequence length, and the corresponding gene name for the protein. As for metabolites, PMODB includes metabolite name, chemical formula, SMILES notation, and associated metabolic pathways.")
 
+Multi_omic_data_integration_module <- HTML("The multi-omic data integration module accepts input of preprocessed multi-omic dataset., including transcriptomics, proteomics, and metabolomics. The module first generates the visualization of these uploaded dataset for visual inspection by t-SNE and UMAP, which aims to observe the distribution of the abundance of genes, proteins, and metabolites. Users have options to select which type of omics dataset for subsequent biomarker discovery analysis. After select one or multiple omic dataset, the module will conduct normalization to unify the scale of different omic dataset. Then, the dimensionality reduction and visualization will be performed to further inspect the normalized and integrated multi-omic data.")
 
+Multi_omics_network_visualization <- HTML("Based on the established PMODB, a multi-omics network is generated utilizing enzymatic reaction data involving genes, proteins, and metabolites. In this network, each gene, protein, or metabolite is represented as a node. The enzymatic reaction information is used to create edges between genes, proteins, and metabolites. Specifically, in enzymatic reactions, edges denote interactions between proteins (enzymes) and metabolites (substrates and products). Additionally, for genes that regulate protein expression, connections are established between genes and proteins, as well as between genes and metabolites. Considering the bidirectional or reversible nature of enzymatic reactions, the network does not contain the direction of reactions, and edge weights are not assigned (Pogodaev et al., 2019).")
 
-Database_of_GC<- "PhenoMultiOmics database (PMODB) mines genes associated with different cancers and their enzymatic reaction metabolism based on the DisGeNET and Metabolic Atlas databases. It also associates protein data through the UniProt database, forming a multi-omics database of disease-gene-protein-metabolite. 
-It comprises essential information about diseases, genes, proteins, and metabolites, each assigned a public database. For genes and diseases, it includes the disease name and ID, gene name, gene symbol, and gene-disease association score. Regarding proteins, the database contains information such as protein name, enzyme classification number (EC number), UniProt ID, enzyme name, protein sequence length, and the corresponding gene name for the protein. As for metabolites, PMODB includes metabolite name, chemical formula, SMILES notation, and associated metabolic pathways.
-PMODB enables rapid access to multi-omics reaction relationship information by querying genes, proteins, or metabolites, with the query results available for download in tabular format."
+Biomarker_discovery_module <- HTML("The PhenoMultiOmics web server incorporates a biomarker discovery module for statistical and functional analysis to discover the key differentially expressed multi-omic biomarkers in case-control studies. For statistical analysis, the univariate and multivariate analysis were embedded. Since the PMODB was designed based on enzymatic reactions with gene, protein, and metabolite information, the biomarker discovery module accepts the preprocessed transcriptomics, proteomics, and metabolomics dataset acquired from case-control cohorts. Specifically, it requires the matrices of gene expression, proteomics, or metabolomics data as input. Each row of this matrix represents a quantitative abundance value of a sample, and each column corresponds to a feature. The univariate analysis performs significance testing to detect differences between case and control groups and assess the statistical significance of these differences. For statistical test, Benjamini and Hochberg (BH) correction could be applied to adjust the P-value if necessary. Results are presented in tables and volcano plots, with default criteria for significance level of P-value < 0.05 and an absolute Log2 Fold Change (Log2FC) ≥ 1. Multivariate analysis includes principal component analysis (PCA) and partial least squares discriminant analysis (PLS-DA) that performs dimensionality reduction and feature selection. Functional analysis using omics data aims to understand the biological functions and pathways associated with the genes, proteins, or metabolites identified in an omics study. This analysis facilitates the interpretation of the biological significance of the results, uncovering the underlying mechanisms of diseases or phenotypes. Gene Ontology Enrichment Analysis (GOEA) and Metabolic Pathway Analysis (MPA) are embedded on the web server. GOEA identifies which GO terms (biological processes, cellular components, and molecular functions) are overrepresented given a set of genes or proteins. MPA identifies the metabolic pathways that are significantly affected in a metabolomics dataset. For the enrichment analysis, enrichment factors and BH-corrected P-values are computed to identify significant enrichment pathways, displayed via bar and bubble charts. Finally, the enrichplot R package is used to visualize networks of individual genes and pathways.")
 
-Database_of_GC_split <- gsub("PMODB enables rapid access", "<br><br>PMODB enables rapid access", Database_of_GC)
+Implementation_in_R <- HTML("The PhenoMultiOmics web server is programmed in R (version: 4.4.1) and relies on packages provided by Bioconductor and CRAN. The multi-omics network is constructed using the visNetwork package, while the limma package facilitates statistical analysis. All visualizations, including figures and plots presented on the web server, are created with the ggplot2 package and are available for download (Ito and Murphy, 2013; Ritchie et al., 2015; Yu et al., 2012). The source code and processed data used in the manuscript is deposited on Github https://github.com/mmetalab/PhenoMultiOmics.")
 
-
-Omics_network <- "Based on the established PhenoMultiOmics Database (PMODB), a multi-omics network is generated utilizing enzymatic reaction data involving genes, proteins, and metabolites. In this network, each gene, protein, or metabolite is represented as a node. The enzymatic reaction information is used to create edges between genes, proteins, and metabolites. Specifically, in enzymatic reactions, edges denote interactions between proteins (enzymes) and metabolites (substrates and products). Additionally, for genes that regulate protein expression, connections are established between genes and proteins, as well as between genes and metabolites.
-This section is divided into two modules, one for uploading data and the other for generating MultiOmics networks. When uploading data, first select the type of disease, involving 20 types of tumors. After clicking search, the main dashboard will display all the node file and edge file of the tumor. After uploading the file, the main dashboard automatically generates tumor-related enzymatic reactions and multi-omics associations extracted from the node file.
-
-In the module dedicated to generating MultiOmics networks, you have the ability to visualize instance data networks. This module also allows you to select uploaded data as Nodes Data. By clicking 'plot', you can create intricate multi-omics graphs. To enhance the aesthetic appeal of these network diagrams, you can adjust the layout style and vary the range of node sizes, adding an extra layer of customization and clarity to your data visualization."
-
-Omics_network_split <- gsub("This section is divided into two modules,", "<br><br> This section is divided into two modules,", Omics_network)
-Omics_network_split2 <- gsub("In the module dedicated to generating MultiOmics", "<br><br> In the module dedicated to generating MultiOmics", Omics_network)
-
-
-Gene_expression <- "For statistical analysis, differential omic feature data analysis is embedded, which require the matrices of gene expression, proteomics, or metabolomics data as input. Each row of this matrix represents a gene or feature, and each column corresponds to a sample ID. This analysis leverages the lima R package to calculate the Log2 Fold Change (Log2FC), estimating differences between case and control groups .Results are presented in tables and volcano plot."
-Gene_set_enrichment_analysis <- "Furthermore, for differentially expressed genes, Gene Set Pathway Enrichment Analysis (GSEA) is conducted, drawing from the clusterProfiler package . This analysis utilizes human genome annotation from org.Hs.eg.db and pathway enrichment data from the KEGG database. Enrichment factors and BH-corrected P-values are computed to identify significant enrichment pathways, displayed via bar and bubble charts. Finally, the enrichplot R package is used to visualize networks of individual genes and pathways."
-
-Copyright <- HTML(
-  "<p>PhenoMultiOmics is offered to the public as a freely available resource.</p>",
-  "<p>Use and re-distribution of the data, in whole or in part, for commercial purposes requires explicit permission of the authors and explicit acknowledgment of the source material (PhenoMultiOmics) and the original publication.</p>",
-  "<p>We ask that users who download significant portions of the database cite the PhenoMultiOmics paper in any resulting publications.</p>",
-  "<p>For commercial licences, please consult with chengwangsdu@outlook.com.</p>"
-  
-)
-
-
-
+Citing_PhenoMultiOmics <- HTML('PhenoMultiOmics is licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license. This license grants users the freedom to:</p>',
+                              
+                               '<li>Distribute: Share copies of the work in any medium or format.',
+                               
+                               '<li>Remix: Adapt, transform, and build upon the work.',
+                               '<li>Commercial Use: Utilize the work for commercial purposes.</p>',
+                               'Under this license, users must comply with the following terms:',
+                               '<li> Attribution: Users must give appropriate credit, provide a link to the license, and indicate if changes were made. Credit must be given in a reasonable manner, but not in a way that suggests the licensor endorses the user or their use.',
+                               '<li>No Additional Restrictions: Users may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</p>',
+                               'For further questions, please contact chengwangsdu@outlook.com.</p>'
+                               )
 tabPanel(
   "Documentation",
-   fluidRow(
+  fluidRow(
     column(12,
-           tags$h3(tags$span(class="fas fa-database icon"), "MultiOmics Database"),
-           div(class="container-fluid shiny-code-container well", HTML(Database_of_GC_split)),
+           tags$h3(tags$span(class="fas fa-database icon"),
+                   "PhenoMultiOmics database"),
+           div(class="container-fluid shiny-code-container well",
+               class = "justify-text",
+               HTML(PhenoMultiOmics_database)
+           ),
            
-           tags$h3(tags$span(class="fas fa-network-wired icon"), "MultiOmics Network"),
-           div(class="container-fluid shiny-code-container well", HTML(Omics_network_split, Omics_network_split2)),
+           tags$h3(tags$span(class="fas fa-network-wired icon"),
+                   "Multi-Omics network visualization"),
+           div(class="container-fluid shiny-code-container well",
+               class = "justify-text",
+               HTML(Multi_omics_network_visualization)
+           ),
            
-           tags$h3(tags$span(class="fas fa-chart-bar icon"), "Functional Analysis"),
-           div(class="container-fluid shiny-code-container well", HTML(Gene_expression), br(), br(), HTML(Gene_set_enrichment_analysis)),
+           tags$h3(tags$span(class="fas fa-chart-bar icon"),
+                   "Biomarker discovery module"),
+           div(class="container-fluid shiny-code-container well",
+               class = "justify-text",
+               HTML(Biomarker_discovery_module)
+           ),
            
-           tags$h3(tags$span(class="fas fa-copyright icon"), "Citing the PhenoMultiOmics"),
-           div(class="container-fluid shiny-code-container well", HTML(Copyright))
+           tags$h3(tags$span(class="fas fa-code icon"),
+                   "Implementation in R"),
+           div(class="container-fluid shiny-code-container well",
+               class = "justify-text",
+               HTML(Implementation_in_R)
+           ),
+            
+           tags$h3(tags$span(class="fas fa-copyright"),
+                   "Citing PhenoMultiOmics"),
+           div(class="container-fluid shiny-code-container well",
+               class = "justify-text",
+               HTML(Citing_PhenoMultiOmics)
+           )
            
-           
-  ))
+    )
+  )
 )
+
+
+
+
+
+
+
