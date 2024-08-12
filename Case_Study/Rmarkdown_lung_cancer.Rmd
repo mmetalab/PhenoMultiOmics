@@ -1,0 +1,141 @@
+---
+title: "metabolite data of lung cancer"
+date: "2024-07-04"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    
+mainfont: "SimSun"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+The metabolomics dataset  were extracted from the Metabolomics Workbench (https://www.metabolomicsworkbench.org/) with study ID ST001231. The dataset consists of 31 plasma samples from individuals with lung cancer (experimental group) and 35 plasma samples from individuals without lung cancer (control group). The data were acquired using untargeted metabolomics via UPLC-QE-MS experiments, resulting in a metabolite intensity matrix for all samples, which was used for subsequent statistical analysis.
+
+```{r data_LC}
+load("Rmarkdown_lung_cancer.RData")
+head(data_LC,3)
+```
+
+## differential genes expression analysis
+
+Metabolites with P value less than 0.05 and \|logFC\| value greater than or equal to 1 were taken as differential expression metabolites
+
+```{r differential expression analysis}
+
+library(tidyr)
+library(limma)
+
+group_LC <- data_LC[,1]
+new_LC <- t(data_LC[,-1])
+
+new_LC <- new_LC %>% data.frame(stringsAsFactors = FALSE) %>%
+  data.matrix()
+
+design <- model.matrix(~0 + factor(group_LC))
+colnames(design) <- c("control", "treat")
+
+rownames(design) <- colnames(new_LC)
+contrast.matrix <- makeContrasts(treat - control, levels = design)
+
+fit <- lmFit(new_LC, design)
+fit_2 <- eBayes(contrasts.fit(fit, contrast.matrix))
+temoutput <- limma::topTable(fit_2, n = Inf, adjust = "fdr")
+temoutput <- na.omit(temoutput)
+
+temoutput <- dplyr::mutate(temoutput, g = ifelse(temoutput$adj.P.Val < 0.05 & abs(temoutput$logFC) >= 1,ifelse(temoutput$logFC >=1, 'Up','Down'),'Stable'))
+
+temoutput
+table(temoutput$g)
+```
+```{r volcano plot}
+library(ggplot2)
+professional_colors <- c("blue", "black", "red")
+
+ggplot(temoutput, aes(x=logFC, y=-log10(adj.P.Val))) +
+  geom_hline(yintercept = -log10(0.05), linetype = 'dashed', size = 0.5, color = "grey60") +
+  geom_vline(xintercept = c(-1,1), linetype = 'dashed', size = 0.5, color = "grey60") +
+  geom_point(aes(color = g), size = 2.5, alpha = 0.7) +
+  scale_color_manual(values = professional_colors) +
+  labs(title = "Volcano Plot", x = "Log Fold Change (logFC)", y = "-Log10 P-value", colour = "Group") +
+  # theme_classic(base_family = "Arial") +
+  theme(
+    text = element_text(size = 14),
+    plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 80, unit = "pt")),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 14),
+    legend.position = "right",
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 14),
+    legend.key.size = unit(3, "lines"),
+    # plot.margin = margin(1.5, 1, 1.5, 1, "cm"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+```{r KEGG pathway analysis}
+library(clusterProfiler)  
+library(org.Hs.eg.db)
+
+diffgene<-bitr(LC_gene$ID,fromType = "SYMBOL",toType = "ENTREZID",OrgDb = "org.Hs.eg.db")
+genes_entrez <- diffgene$ENTREZID
+enrich_result <- enrichKEGG(gene = genes_entrez,
+                            organism = "hsa",
+                            keyType = "kegg", 
+                            pAdjustMethod = "holm",
+                            pvalueCutoff = 0.05,
+                            qvalueCutoff = 0.05)
+data.frame(enrich_result)
+```
+Input the differential mass spectrum features into the HMDB database for metabolite name matching, then match their associated genes in omicsnetwork. Perform enrichment analysis on these associated genes in the same way.
+
+```{r KEGG pathway plot}
+
+ek.rt <- data.frame(enrich_result@result)
+
+ek.rt <- separate(data=ek.rt, col=GeneRatio, into = c("GR1", "GR2"), sep = "/") #劈分GeneRatio为2列（GR1、GR2）
+ek.rt <- separate(data=ek.rt, col=BgRatio, into = c("BR1", "BR2"), sep = "/") #劈分BgRatio为2列（BR1、BR2）
+ek.rt <- mutate(ek.rt, enrichment_factor = (as.numeric(GR1)/as.numeric(GR2))/(as.numeric(BR1)/as.numeric(BR2))) #计算Enrichment Factor
+
+ek.rt10 <- ek.rt %>% dplyr::filter(dplyr::row_number() >= 1,dplyr::row_number() <= as.numeric(20))
+
+p1 <-  ggplot(ek.rt10, aes(enrichment_factor, Description)) + 
+  geom_point(aes(size=Count, color=p.adjust)) +
+  scale_color_gradient(low="red", high="blue") + 
+  labs(color="P Adjust", size="Count", x="Enrichment Factor", y="KEGG Term", title="KEGG Enrichment Analysis") + 
+  theme_minimal() +
+  theme(
+    text = element_text(size=10), 
+    axis.title = element_text(size=10, face="bold"), 
+    axis.text = element_text(size=10), 
+    legend.title = element_text(size=10), 
+    legend.text = element_text(size=10),
+    axis.text.x = element_text(size = 10),  
+    axis.text.y = element_text(size = 10),
+    plot.title = element_text(size=14, face="bold", hjust=0.5))
+p1
+ 
+p2 <-  ggplot(ek.rt10, aes(x = enrichment_factor, y = reorder(Description, enrichment_factor))) + 
+   geom_bar(stat = "identity", aes(fill = p.adjust), width = 0.7) +
+   scale_fill_gradient(low =  "red", high ="blue", name = "P Adjust") + 
+   labs(size = "Count", x = "Enrichment Factor", y = "KEGG Term", title = "KEGG Enrichment Analysis") + 
+   theme_minimal() +
+   theme(
+     text = element_text(size = 10), 
+     axis.title = element_text(size = 10, face = "bold"), 
+     axis.text = element_text(size = 10), 
+     legend.title = element_text(size = 10), 
+     legend.text = element_text(size = 10),
+     axis.text.x = element_text(size = 10),  
+     axis.text.y = element_text(size = 10),
+     plot.title = element_text(size = 14, face = "bold", hjust = 0.5)
+   )
+p2
+
+
+```
+
