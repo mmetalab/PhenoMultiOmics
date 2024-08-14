@@ -29,8 +29,8 @@ output$upload_integrat_options <- renderUI({
   if (input$own_integrat_data) {
     tagList(
     fileInput("file_gene", "Upload transcriptomics data", accept = ".csv"),
-    fileInput("file_protein", "Upload transcriptomics data", accept = ".csv"),
-    fileInput("file_metabolite", "Upload transcriptomics data", accept = ".csv")
+    fileInput("file_protein", "Upload proteomics data", accept = ".csv"),
+    fileInput("file_metabolite", "Upload metabolomics data", accept = ".csv")
     )
   }
 })
